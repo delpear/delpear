@@ -1,0 +1,30 @@
+/*** Sketch:  Stamps
+ Lab 5* 
+ Author:  Delia Parrish
+ Date:    Mar 25, 2021*
+ **/
+
+
+PImage img; //create variable for img
+void setup(){
+  size(1800,900);
+  img=loadImage("yuh3.png"); //upload image file, made image in illustrator
+}
+int j=10; //scale variable
+int r=300; //image size variable
+void draw(){
+	noCursor();
+  background(255);
+  imageMode(CENTER);
+  for(int i=1;i<9;i++){ //for loop for incrementing variable to apply to transform functions
+    translate(j*i,j*i); //transform functions
+		scale(.75+i/9);
+		rotate(i/(TWO_PI));
+		image(img,mouseX+450,mouseY,r,r); //draw image 6 times and place around the mouse
+		image(img,mouseX-450,mouseY,r,r);
+		image(img,mouseX,mouseY+450,r,r);
+		image(img,mouseX,mouseY+450,r,r);
+		image(img,mouseX+300,mouseY+600,r,r);
+		image(img,mouseX+450,mouseY-450,r,r);
+	}
+}
