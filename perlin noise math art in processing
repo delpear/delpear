@@ -1,0 +1,93 @@
+//Assignment 2 Time Based Animation
+//By Delia Parrish
+//April 9th, 2021
+// created and inspired by help of Shiffman youtube tutorials.
+
+int total=50; //total starting number of threads
+float r; //radius of large ellipses
+int factor = 2; //number of focal points
+float noiseMax = 100; //noise variable
+float phase = 0; 
+float zoff = 0;
+int [] color = {245 ,255, 265, 275, 285, 295, 305, 315, 0}; //colors array
+int [] alpha = {95,85,75,65,55,45}; //transparency alpha array
+void setup () {
+fullScreen(); //fullsize of window
+  r=600; //radius
+	colorMode(HSB,360,100,100,100);
+}
+PVector getVector(int index, int total) {
+  float angle = map(index % total, 0, total, 0, TWO_PI);
+  PVector v = PVector.fromAngle(angle + PI/2);
+  v.mult(r);
+  return v;
+}
+void draw () {
+  background(0);
+ 
+  float r = width/2;
+ 
+   stroke(255);
+  if ( total>250) { //limits to create changing color ranges
+    total = 0;
+    factor++; }
+	if ((factor-2)%9==0) {
+		stroke(color[factor-2],0,100,alpha[factor-3]); }
+  if ((factor-2)%9==1) {
+		stroke(color[factor-2],100,100,alpha[factor-3]); }
+	if ((factor-2)%9==2) {
+		stroke(color[factor-2],100,100,alpha[factor-3]); }
+	if ((factor-2)%9==3) {
+		stroke(color[factor-2],100,100,alpha[factor-3]); }
+	if ((factor-2)%9==4) {
+		stroke(color[factor-2],100,100,alpha[factor-3]); }
+	if ((factor-2)%9==5) {
+		stroke(color[factor-2],100,100,alpha[factor-3]); }
+	if ((factor-2)%9==6) {
+		stroke(color[factor-2],100,100,alpha[factor-3%6]); }
+	if ((factor-2)%9==7) {
+		stroke(color[factor-2],100,100,alpha[factor-3%6]); }
+	if ((factor-2)%9==8) {
+		stroke(color[factor-2],0,100,alpha[factor-3%6]); }
+	if (factor==18) {
+		factor=0;}
+	
+	
+	
+  translate(width/2,height/2);
+ 
+  noFill();
+ // ellipse(0,0,r*2,r*2);
+	
+  beginShape(); //creates shape for noise loop, plotting x and y coordinates using sin and cos functions with set limits for perlin noise
+  for (float a=0; a<TWO_PI; a+=0.05) {
+   float xoff = map(cos(a+phase),-1,1,0,noiseMax);
+   float yoff = map(sin(a),-1,1,0,noiseMax);
+   float k = map(noise(xoff,yoff, zoff),0,1,r-200,r);
+   float x = k * cos(a);
+   float y = k * sin(a);
+   vertex (x,y);
+  }
+  endShape(CLOSE); // shape has slight gap without CLOSE
+
+	
+	
+  for (int i = 0; i < total; i++) { //for loop between 50-250 for smaller circles
+    PVector v = getVector(i, total);
+    //fill(255,25);
+    ellipse(v.x,v.y,16,16);
+  }
+    
+   for (int i = 0; i < total; i++) { // for loop for lines
+     PVector a= getVector(i, total);
+     PVector b= getVector(i* factor, total);
+     line(a.x,a.y,b.x,b.y);
+   }
+   total++; //increment total lines and circles by one per cycle of draw
+   zoff +=0.01; // increasing noise offset per cycle of draw
+
+  }
+  
+//idea when gets certain number of points say 7 lines begin to move cirulating around points at diameter distance with set number of smaller circles like 9
+//stroke for line become black to make disappear, create same system around smaller centers
+//other idea create particle system 
